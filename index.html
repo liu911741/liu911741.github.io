@@ -152,6 +152,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h1><h2 id="Lambda概念和本质"><a href="#Lambda概念和本质" class="headerlink" title="Lambda概念和本质"></a>Lambda概念和本质</h2><p>Lambda表达式是函数式编程语法，允许将函数作为参数传递或赋值给变量，从而简化代码和提高代码的可读性和可维护性。Lambda表达式在Java 8中被引入，作为函数式编程的一种体现，它使得Java具备了函数式编程的能力。<br>但函数式编程并不是Java语言原生支持的语法，Lambda表达式在Java中的本质是匿名对象的匿名方法。编译器在编译期动态生成匿名对象和匿名方法，运行时进行调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将Lambda反编译后的结果</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        List&lt;String&gt; strList = Arrays.asList(<span class="string">&quot;......&quot;</span>);</span><br><span class="line">        strList.forEach((Consumer&lt;String&gt;)LambdaMetafactory.metafactory(</span><br><span class="line">	        <span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>,            </span><br><span class="line">            (Ljava/lang/Object;)V,</span><br><span class="line">            lambda$main$<span class="number">0</span>(java.lang.String),       </span><br><span class="line">            (Ljava/lang/String;)V)());</span><br><span class="line">&#125;</span><br><span class="line">        </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> lambda$main$<span class="number">0</span>(String s) &#123;</span><br><span class="line">        System.out.println(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Lambda表达式语法格式"><a href="#Lambda表达式语法格式" class="headerlink" title="Lambda表达式语法格式"></a>Lambda表达式语法格式</h2><p>(parameters) -&gt; { statements; }</p>
+<p>parameters	  ：函数的参数列表</p>
+<p>statements;	  ：执行语句</p>
+<p>->		      ：使用指定参数去完成某个功能</p>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="type">int</span> a, <span class="type">int</span> b) -&gt; &#123;<span class="keyword">return</span> a + b;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(parameters) -&gt; expression</p>
+<p>parameters	：函数的参数列表</p>
+<p>expression	：表达式</p>
+<p>->		：使用指定参数去完成某个功能</p>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(a, b) -&gt; a + b;</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数式接口的概念"><a href="#函数式接口的概念" class="headerlink" title="函数式接口的概念"></a>函数式接口的概念</h2><p>函数式接口是Lambda表达式的一个前提，只有符合函数式编程规则的接口才能使用Lambda表达式进行表达<br>函数式接口的定义为，有且仅有一个抽象方法的接口（可使用 @FunctionnalInterface 注解标注）<br>常见的函数式接口有：</p>
+<ul>
+<li>Runnable&#x2F;Callable （常用于多线程场景）</li>
+<li>Supplier&#x2F;Consumer （ForEach、Collect等）</li>
+<li>Comparator （比较，Arrays.sort）</li>
+<li>Predicate （Stream流 filter）</li>
+<li>Function （Stream）</li>
+</ul>
+<h2 id="Lambda表达式的常见语法"><a href="#Lambda表达式的常见语法" class="headerlink" title="Lambda表达式的常见语法"></a>Lambda表达式的常见语法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.函数体只有一个语句，省略大括号</span></span><br><span class="line">(String msg) -&gt; System.out.println(<span class="string">&quot;hello&quot;</span>+ msg);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.只有一个参数，省略圆括号，同时省略类型</span></span><br><span class="line">msg -&gt; System.out.println(<span class="string">&quot;hello “ + msg);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// 3.函数体只有一个表达式，省略return</span></span><br><span class="line"><span class="string">(int a, int b) -&gt; a + b;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// 4. 省略参数类型，编译器可以进行推断</span></span><br><span class="line"><span class="string">(a, b) -&gt; a + b;</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2024/08/25/test/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-新世界" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
